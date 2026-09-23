@@ -29,16 +29,16 @@ export default function ThreadList() {
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
   });
 
-  if (isPending) return <p className="muted">Loading threads…</p>;
-  if (isError) return <p className="error">Could not load threads: {error.message}</p>;
-
-  const threads = data.pages.flatMap((page) => page.threads);
-
   const onIntersect = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   useIntersection(sentinelRef, onIntersect);
+
+  if (isPending) return <p className="muted">Loading threads…</p>;
+  if (isError) return <p className="error">Could not load threads: {error.message}</p>;
+
+  const threads = data.pages.flatMap((page) => page.threads);
 
   return (
     <div>
